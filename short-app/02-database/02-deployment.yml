@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: short-app-database-deployment
+  namespace: short-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: short-app
+      type: database
+  template:
+    metadata:
+      labels:
+        app: short-app
+        type: database
+    spec:
+      containers:
+        - name: short-app-database
+          image: postgres:16.0
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: short-app-database-secret
+                  key: POSTGRES_DB
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: short-app-database-secret
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: short-app-database-secret
+                  key: POSTGRES_PASSWORD
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "300m"
+          volumeMounts:
+            - name: short-app-database
+              mountPath: /var/lib/postgresql/data
+              subPath: postgres
+            - name: short-app-database-init-script
+              mountPath: /docker-entrypoint-initdb.d/
+      volumes:
+        - name: short-app-database
+          persistentVolumeClaim:
+            claimName: short-app-database-pvc
+        - name: short-app-database-init-script
+          configMap:
+            name: short-app-database-init-script
