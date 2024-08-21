@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: short-app-frontend-deployment
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: short-app
+      type: frontend
+  template:
+    metadata:
+      labels:
+        app: short-app
+        type: frontend
+    spec:
+      containers:
+        - name: short-app-frontend
+          image: antonlarichev/short-app:v1.4
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "100m"
