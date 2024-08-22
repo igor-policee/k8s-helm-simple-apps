@@ -16,3 +16,9 @@ app:
         cpu: 100m
     demo:
       name: demo
+
+users:
+  - name: Anton
+    role: admin
+  - name: Egor
+    role: manager
