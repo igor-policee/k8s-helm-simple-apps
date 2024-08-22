@@ -7,5 +7,5 @@ data:
   {{- if eq .Values.env "production" }}
   paymentToken: "1234"
   {{- else }}
-  paymentToken: false
+  paymentToken: "false"
   {{- end }}
