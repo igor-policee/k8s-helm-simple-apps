@@ -1,8 +1,15 @@
+{{- define "chart.labels" }}
+  labels:
+    date: {{ now | htmlDate }}
+    version: {{ .Values.app.types.demo.version }}
+{{- end }}
+
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: "{{ .Values.app.name }}-{{ .Values.app.types.demo.name }}-configmap"
   namespace: {{ .Values.namespace }}
+  {{- template "chart.labels" . }}
 data:
   {{- if eq .Values.env "production" }}
   paymentToken: "1234"

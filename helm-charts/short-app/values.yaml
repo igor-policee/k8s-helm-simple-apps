@@ -16,6 +16,7 @@ app:
         cpu: 100m
     demo:
       name: demo
+      version: v0.1
 
 users:
   - name: Anton
