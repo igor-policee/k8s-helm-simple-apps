@@ -1,24 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: "{{ .Values.app.name }}-{{ .Values.app.types.frontend.name }}-deployment"
-  namespace: {{ .Values.namespace }}
+  {{- with .Values.app }}
+  name: "{{ .name }}-{{ .types.frontend.name }}-deployment"
+  namespace: {{ $.Values.namespace }}
 spec:
-  replicas: {{ .Values.app.types.frontend.replicas }}
+  replicas: {{ .types.frontend.replicas }}
   selector:
     matchLabels:
-      app: {{ .Values.app.name }}
-      type: {{ .Values.app.types.frontend.name }}
+      app: {{ .name }}
+      type: {{ .types.frontend.name }}
   template:
     metadata:
       labels:
-        app: {{ .Values.app.name }}
-        type: {{ .Values.app.types.frontend.name }}
+        app: {{ .name }}
+        type: {{ .types.frontend.name }}
     spec:
       containers:
-        - name: "{{ .Values.app.name }}-{{ .Values.app.types.frontend.name }}"
-          image: "{{ .Values.app.types.frontend.image }}:{{ .Values.app.types.frontend.version }}"
+        - name: "{{ .name }}-{{ .types.frontend.name }}"
+          image: "{{ .types.frontend.image }}:{{ .types.frontend.version }}"
           ports:
-            - containerPort: {{ .Values.app.types.frontend.port }}
+            - containerPort: {{ .types.frontend.port }}
           resources:
-            limits: {{.Values.app.types.frontend.limits | toYaml | nindent 14 }}
+            limits: {{ .types.frontend.limits | toYaml | nindent 14 }}
+  {{- end }}

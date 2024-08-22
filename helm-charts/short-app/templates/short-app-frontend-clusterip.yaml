@@ -1,13 +1,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: "{{ .Values.app.name }}-{{ .Values.app.types.frontend.name }}-clusterip"
-  namespace: {{ .Values.namespace }}
+  {{- with .Values.app }}
+  name: "{{ .name }}-{{ .types.frontend.name }}-clusterip"
+  namespace: {{ $.Values.namespace }}
 spec:
   type: ClusterIP
   ports:
-    - port: {{ .Values.app.types.frontend.port }}
-      protocol: {{ .Values.app.types.frontend.protocol }}
+    - port: {{ .types.frontend.port }}
+      protocol: {{ .types.frontend.protocol }}
   selector:
-    app: {{ .Values.app.name }}
-    type: {{ .Values.app.types.frontend.name }}
+    app: {{ .name }}
+    type: {{ .types.frontend.name }}
+  {{- end }}
