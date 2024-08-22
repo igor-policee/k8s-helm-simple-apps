@@ -1,3 +1,6 @@
+namespace: short-app
+env: dev
+
 app:
   name: short-app
   types:
@@ -11,5 +14,5 @@ app:
       limits:
         memory: 128Mi
         cpu: 100m
-
-namespace: short-app
+    demo:
+      name: demo

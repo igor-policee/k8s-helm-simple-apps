@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ .Values.app.name }}-{{ .Values.app.types.demo.name }}-configmap"
+  namespace: {{ .Values.namespace }}
+data:
+  {{- if eq .Values.env "production" }}
+  paymentToken: "1234"
+  {{- else }}
+  paymentToken: false
+  {{- end }}
