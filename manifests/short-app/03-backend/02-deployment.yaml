@@ -30,10 +30,6 @@ spec:
                 secretKeyRef:
                   name: short-app-backend-secret
                   key: DATABASE_URL
-          volumeMounts:
-            - name: short-app-backend-configmap
-              mountPath: /etc/test
-              readOnly: true
           livenessProbe:
             exec:
               command:
@@ -43,7 +39,3 @@ spec:
             initialDelaySeconds: 30
             periodSeconds: 5
             failureThreshold: 1
-      volumes:
-        - name: short-app-backend-configmap
-          configMap:
-            name: short-app-backend-configmap

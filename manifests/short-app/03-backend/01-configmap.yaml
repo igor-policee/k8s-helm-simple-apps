@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: short-app-backend-configmap
-  namespace: short-app
-data:
-  key: "val"
