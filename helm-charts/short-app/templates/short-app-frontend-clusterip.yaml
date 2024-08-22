@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: short-app-frontend-clusterip
+  name: "{{ .Values.app.name }}-{{ .Values.app.types.frontend.name }}-clusterip"
   namespace: {{ .Values.namespace }}
 spec:
   type: ClusterIP
   ports:
-    - port: 80
-      protocol: TCP
+    - port: {{ .Values.app.types.frontend.port }}
+      protocol: {{ .Values.app.types.frontend.protocol }}
   selector:
-    app: short-app
-    type: frontend
+    app: {{ .Values.app.name }}
+    type: {{ .Values.app.types.frontend.name }}

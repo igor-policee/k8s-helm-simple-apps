@@ -1,26 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: short-app-frontend-deployment
+  name: "{{ .Values.app.name }}-{{ .Values.app.types.frontend.name }}-deployment"
   namespace: {{ .Values.namespace }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.app.types.frontend.replicas }}
   selector:
     matchLabels:
-      app: short-app
-      type: frontend
+      app: {{ .Values.app.name }}
+      type: {{ .Values.app.types.frontend.name }}
   template:
     metadata:
       labels:
-        app: short-app
-        type: frontend
+        app: {{ .Values.app.name }}
+        type: {{ .Values.app.types.frontend.name }}
     spec:
       containers:
-        - name: short-app-frontend
-          image: antonlarichev/short-app:v1.4
+        - name: "{{ .Values.app.name }}-{{ .Values.app.types.frontend.name }}"
+          image: "{{ .Values.app.types.frontend.image }}:{{ .Values.app.types.frontend.version }}"
           ports:
-            - containerPort: 80
+            - containerPort: {{ .Values.app.types.frontend.port }}
           resources:
-            limits:
-              memory: "128Mi"
-              cpu: "100m"
+            limits: {{.Values.app.types.frontend.limits | toYaml | nindent 14 }}
