@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  {{- with .Values.frontend }}
+  {{- with .Values.backend }}
   name: "{{ $.Values.app_name }}-{{ .type }}-deployment"
   namespace: {{ $.Values.namespace }}
 spec:
@@ -23,4 +23,19 @@ spec:
             - containerPort: {{ .port }}
           resources:
             limits: {{ .limits | toYaml | nindent 14 }}
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ $.Values.app_name }}-{{ .type }}-secret"
+                  key: DATABASE_URL
   {{- end }}
+          livenessProbe:
+            exec:
+              command:
+                - curl
+                - --fail
+                - http://localhost:3000/api
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            failureThreshold: 1
