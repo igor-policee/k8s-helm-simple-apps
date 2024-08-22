@@ -22,3 +22,5 @@ users:
     role: admin
   - name: Egor
     role: manager
+  - name: Matthew
+    role: janitor

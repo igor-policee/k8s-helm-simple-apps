@@ -9,7 +9,9 @@ data:
   {{- else }}
   paymentToken: "false"
   {{- end }}
+  {{- $var := .Release.Name | upper | quote }}
+  var: {{ $var }}
   users:
-    {{- range .Values.users }}
-    - {{ .name }}: {{ .role }}
+    {{- range $index, $user := .Values.users }}
+    {{ $user.name }}: {{ $user.role }} - {{ $index }}
     {{- end }}
