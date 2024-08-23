@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  {{- with .Values.database }}
+  name: "{{ $.Values.appName }}-{{ .type }}-pvc"
+  namespace: {{ $.Values.namespace }}
+spec:
+  resources:
+    requests:
+      storage: {{ .storage }}
+  accessModes:
+    - ReadWriteOnce
+  {{- end }}

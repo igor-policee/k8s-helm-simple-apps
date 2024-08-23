@@ -2,22 +2,22 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   {{- with .Values.backend }}
-  name: "{{ $.Values.app_name }}-{{ .type }}-deployment"
+  name: "{{ $.Values.appName }}-{{ .type }}-deployment"
   namespace: {{ $.Values.namespace }}
 spec:
   replicas: {{ .replicas }}
   selector:
     matchLabels:
-      app: {{ $.Values.app_name }}
+      app: {{ $.Values.appName }}
       type: {{ .type }}
   template:
     metadata:
       labels:
-        app: {{ $.Values.app_name }}
+        app: {{ $.Values.appName }}
         type: {{ .type }}
     spec:
       containers:
-        - name: "{{ $.Values.app_name }}-{{ .type }}"
+        - name: "{{ $.Values.appName }}-{{ .type }}"
           image: "{{ .image }}:{{ .version }}"
           ports:
             - containerPort: {{ .port }}
@@ -27,9 +27,8 @@ spec:
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
-                  name: "{{ $.Values.app_name }}-{{ .type }}-secret"
+                  name: "{{ $.Values.appName }}-{{ .type }}-secret"
                   key: DATABASE_URL
-  {{- end }}
           livenessProbe:
             exec:
               command:
@@ -39,3 +38,4 @@ spec:
             initialDelaySeconds: 30
             periodSeconds: 5
             failureThreshold: 1
+  {{- end }}

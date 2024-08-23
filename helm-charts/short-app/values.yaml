@@ -1,4 +1,4 @@
-app_name: short-app
+appName: short-app
 namespace: short-app
 
 backend:
@@ -11,7 +11,6 @@ backend:
   limits:
     memory: 512Mi
     cpu: 200m
-  env: DATABASE_URL
 
 frontend:
   type: frontend
@@ -35,6 +34,7 @@ database:
   password: demo
   hostname: short-app-database-clusterip
   db: demo
+  storage: 1Gi
   limits:
     memory: 512Mi
     cpu: 300m
