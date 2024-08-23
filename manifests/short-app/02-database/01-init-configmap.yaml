@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: short-app-database-init-script
+  name: short-app-database-init-configmap
   namespace: short-app
 data:
   init.sql: |
