@@ -1,5 +1,11 @@
 appName: short-app
-namespace: short-app
+
+namespace: short-ap
+
+types:
+  - backend
+  - frontend
+  - database
 
 backend:
   type: backend
