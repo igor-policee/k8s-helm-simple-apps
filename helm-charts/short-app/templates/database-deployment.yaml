@@ -2,22 +2,24 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   {{- with .Values.database }}
-  name: "{{ $.Values.appName }}-{{ .type }}-deployment"
+  name: "{{ $.Chart.Name }}-{{ .type }}-deployment"
   namespace: {{ $.Values.namespace }}
+  labels:
+{{- include "common.labels" $ | indent 4 }}
 spec:
   replicas: {{ .replicas }}
   selector:
     matchLabels:
-      app: {{ $.Values.appName }}
+      app: {{ $.Chart.Name }}
       type: {{ .type }}
   template:
     metadata:
       labels:
-        app: {{ $.Values.appName }}
+        app: {{ $.Chart.Name }}
         type: {{ .type }}
     spec:
       containers:
-        - name: "{{ $.Values.appName }}-{{ .type }}"
+        - name: "{{ $.Chart.Name }}-{{ .type }}"
           image: "{{ .image }}:{{ .version }}"
           ports:
             - containerPort: {{ .port }}
@@ -27,29 +29,29 @@ spec:
             - name: POSTGRES_DB
               valueFrom:
                 secretKeyRef:
-                  name: "{{ $.Values.appName }}-{{ .type }}-secret"
+                  name: "{{ $.Chart.Name }}-{{ .type }}-secret"
                   key: POSTGRES_DB
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
-                  name: "{{ $.Values.appName }}-{{ .type }}-secret"
+                  name: "{{ $.Chart.Name }}-{{ .type }}-secret"
                   key: POSTGRES_USER
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: "{{ $.Values.appName }}-{{ .type }}-secret"
+                  name: "{{ $.Chart.Name }}-{{ .type }}-secret"
                   key: POSTGRES_PASSWORD
           volumeMounts:
-            - name: "{{ $.Values.appName }}-{{ .type }}-data"
+            - name: "{{ $.Chart.Name }}-{{ .type }}-data"
               mountPath: /var/lib/postgresql/data
               subPath: postgres
-            - name: "{{ $.Values.appName }}-{{ .type }}-init-configmap"
+            - name: "{{ $.Chart.Name }}-{{ .type }}-init-script"
               mountPath: /docker-entrypoint-initdb.d/
       volumes:
-        - name: "{{ $.Values.appName }}-{{ .type }}-data"
+        - name: "{{ $.Chart.Name }}-{{ .type }}-data"
           persistentVolumeClaim:
-            claimName: "{{ $.Values.appName }}-{{ .type }}-pvc"
-        - name: "{{ $.Values.appName }}-{{ .type }}-init-script"
+            claimName: "{{ $.Chart.Name }}-{{ .type }}-pvc"
+        - name: "{{ $.Chart.Name }}-{{ .type }}-init-script"
           configMap:
-            name: "{{ $.Values.appName }}-{{ .type }}-init-configmap"
+            name: "{{ $.Chart.Name }}-{{ .type }}-init-configmap"
   {{- end }}

@@ -2,8 +2,10 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   {{- with .Values.database }}
-  name: "{{ $.Values.appName }}-{{ .type }}-init-configmap"
+  name: "{{ $.Chart.Name }}-{{ .type }}-init-configmap"
   namespace: {{ $.Values.namespace }}
+  labels:
+{{- include "common.labels" $ | indent 4 }}
 data:
   init.sql: |
     CREATE TABLE IF NOT EXISTS "Link" (

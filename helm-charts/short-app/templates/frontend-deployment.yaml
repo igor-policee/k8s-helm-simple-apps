@@ -2,22 +2,24 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   {{- with .Values.frontend }}
-  name: "{{ $.Values.appName }}-{{ .type }}-deployment"
+  name: "{{ $.Chart.Name }}-{{ .type }}-deployment"
   namespace: {{ $.Values.namespace }}
+  labels:
+{{- include "common.labels" $ | indent 4 }}
 spec:
   replicas: {{ .replicas }}
   selector:
     matchLabels:
-      app: {{ $.Values.appName }}
+      app: {{ $.Chart.Name }}
       type: {{ .type }}
   template:
     metadata:
       labels:
-        app: {{ $.Values.appName }}
+        app: {{ $.Chart.Name }}
         type: {{ .type }}
     spec:
       containers:
-        - name: "{{ $.Values.appName }}-{{ .type }}"
+        - name: "{{ $.Chart.Name }}-{{ .type }}"
           image: "{{ .image }}:{{ .version }}"
           ports:
             - containerPort: {{ .port }}

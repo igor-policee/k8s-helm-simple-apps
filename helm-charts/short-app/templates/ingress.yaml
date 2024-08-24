@@ -1,8 +1,10 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: short-app-ingress
+  name: "{{ .Chart.Name }}-ingress"
   namespace: {{ .Values.namespace }}
+  labels:
+{{- include "common.labels" $ | indent 4 }}
   annotations:
     nginx.ingress.kubernetes.io/add-base-url: "true"
 spec:
