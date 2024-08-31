@@ -7,6 +7,7 @@ metadata:
   labels:
 {{- include "common.labels" $ | indent 4 }}
 spec:
+  storageClassName: nfs-csi
   resources:
     requests:
       storage: {{ .storage }}
