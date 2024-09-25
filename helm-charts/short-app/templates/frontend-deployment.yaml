@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   {{- with .Values.frontend }}
   name: "{{ $.Chart.Name }}-{{ .type }}-deployment"
-  namespace: {{ $.Chart.Name }}
+  namespace: {{ $.Release.Namespace }}
   labels:
 {{- include "common.labels" $ | indent 4 }}
 spec:
